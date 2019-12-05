@@ -114,7 +114,7 @@ body {
 
 .card p {
   font-size: 1.4rem;
-  margin-bottom: 3px;
+  margin: 2% 0;
 }
 
 .card .username {
@@ -135,9 +135,12 @@ body {
   visibility: visible;
   opacity:100;
   margin: 5% 0;
+  padding: 5%;
+  border: solid 2px #2cb5e8;
+  font-weight:bold;
+  background: linear-gradient(141deg, #9fb8ad8c 0%, #1fc8db82 51%, #2cb5e84a 75%);
 }
-.expandButton {
-  
+.expandButton { 
   font-size: 15px;
   color:white;
   cursor: pointer;
@@ -153,4 +156,27 @@ body {
 }
 .hide {
   display:none;
+}
+.noBio{
+  color:red;
+  font-weight:bold;
+}
+.bio{
+  font-weight:bold;
+  color: #4a2121;
+}
+.profileButton{
+  width:100%;
+  height: 5%;
+  text-align:center;
+  padding: 2%;
+  background:linear-gradient(141deg, #9fb8ad 0%, #1fc8db 51%, #2cb5e8 75%);
+}
+
+.profileButton a{
+  font-size: 15px;
+  color:white;
+  cursor: pointer;
+  display:block;
+  text-decoration: none;
 }

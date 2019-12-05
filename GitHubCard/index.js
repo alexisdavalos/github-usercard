@@ -93,7 +93,16 @@ function gitCard(data){
   profileLink.target = "_blank";
   followers.textContent = `Followers: ${data.data.followers}`;
   following.textContent = `Following: ${data.data.following}`;
-  bio.textContent = `Bio: ${data.data.bio}`;
+
+  //Check null bio
+  if(data.data.bio === null){
+    bio.textContent = 'This User Has No Bio :(';
+    bio.classList.toggle('noBio');
+  }else{
+    bio.textContent = `Bio: ${data.data.bio}`;
+    bio.classList.toggle('bio');
+  }
+
   repos.textContent = `Public Repos: ${data.data.public_repos}`;
   openButton.textContent = `See More \u25bc`;
   closeButton.textContent = `See Less \u25b2`;
@@ -105,8 +114,9 @@ function gitCard(data){
   userName.classList.add('username');
   cardExtraInfo.classList.add('extraInfo');
   openButton.classList.add('expandButton');
-  closeButton.classList.add('expandButton', 'hide')
-  buttons.classList.add('buttons')
+  closeButton.classList.add('expandButton', 'hide');
+  buttons.classList.add('buttons');
+  profile.classList.add('profileButton');
   
   //append elements
   card.appendChild(usrImg);
