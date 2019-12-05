@@ -7,7 +7,6 @@ axios.get('https://api.github.com/users/alexisdavalos')
   console.log(response);
   const newCard = gitCard(response);
   cardsParent.appendChild(newCard);
-
 })
 /* Step 2: Inspect and study the data coming back, this is YOUR 
    github info! You will need to understand the structure of this 
@@ -31,7 +30,19 @@ const cardsParent = document.querySelector('.cards');
           user, and adding that card to the DOM.
 */
 
-const followersArray = ['FreedomWriter', 'thericktastic', 'agohorel', 'anamonteiro430'];
+const followersArray = ['FreedomWriter', 'thericktastic', 'agohorel', 'anamonteiro430', 'lucasgreenwell', 'nicbongo', 'PHONGdotTech', 'davebettswebdev', 'alexandercsierra', 'aalvinlin', 'lisabpink', 'Cireimu'];
+
+followersArray.forEach(item =>{
+  axios.get(`https://api.github.com/users/${item}`)
+    .then(response=>{
+
+      const newCard = gitCard(response);
+      cardsParent.appendChild(newCard);
+  })
+    .catch(error =>{
+      console.log("The Github Data Was Not Returned", error)
+    })
+})
 
 /* Step 3: Create a function that accepts a single object as its only argument,
           Using DOM methods and properties, create a component that will return the following DOM element: 
@@ -64,24 +75,38 @@ function gitCard(data){
         profileLink = document.createElement('a'), //populate href and content
         followers = document.createElement('p'),
         following = document.createElement('p'),
-        bio = document.createElement('p');
+        bio = document.createElement('p'),
+        repos = document.createElement('p'),
+        cardExtraInfo = document.createElement('div'),
+        buttons = document.createElement('div'),
+        openButton = document.createElement('span'),
+        closeButton = document.createElement('span');
+
 
   //add content to elements
   usrImg.src = data.data.avatar_url;
   name.textContent = data.data.name;
   userName.textContent = data.data.login;
   location.textContent = data.data.location;
-  profileLink.textContent = "Github Page";
+  profileLink.textContent = "Visit Profile";
   profileLink.href = data.data.html_url;
+  profileLink.target = "_blank";
   followers.textContent = `Followers: ${data.data.followers}`;
   following.textContent = `Following: ${data.data.following}`;
-  bio.textContent = `Bio: \n ${data.data.bio}`;
+  bio.textContent = `Bio: ${data.data.bio}`;
+  repos.textContent = `Public Repos: ${data.data.public_repos}`;
+  openButton.textContent = `See More \u25bc`;
+  closeButton.textContent = `See Less \u25b2`;
 
   //add element classes
   card.classList.add('card');
   cardInfo.classList.add('card-info');
   name.classList.add('name');
   userName.classList.add('username');
+  cardExtraInfo.classList.add('extraInfo');
+  openButton.classList.add('expandButton');
+  closeButton.classList.add('expandButton', 'hide')
+  buttons.classList.add('buttons')
   
   //append elements
   card.appendChild(usrImg);
@@ -91,9 +116,20 @@ function gitCard(data){
   cardInfo.appendChild(location);
   cardInfo.appendChild(profile);
   profile.appendChild(profileLink);
-  cardInfo.appendChild(followers);
-  cardInfo.appendChild(following);
-  cardInfo.appendChild(bio);
+  cardExtraInfo.appendChild(followers);
+  cardExtraInfo.appendChild(following);
+  cardInfo.appendChild(buttons);
+  buttons.appendChild(openButton);
+  buttons.appendChild(closeButton);
+  cardInfo.appendChild(cardExtraInfo);
+  cardExtraInfo.appendChild(bio);
+
+  //add event listener to toggle paragraph content
+  buttons.addEventListener('click', () =>{
+    openButton.classList.toggle('hide');
+    closeButton.classList.toggle('hide');
+    cardExtraInfo.classList.toggle('extraInfo-open');
+  })
 
   return card;
 }

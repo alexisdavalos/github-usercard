@@ -122,6 +122,35 @@ body {
   font-style: italic;
   margin: 3px 0 10px;
 }
-
-
-
+.card-info{
+  width:100%;
+}
+.extraInfo {
+  height:0px;
+  visibility: hidden;
+  opacity:0;
+}
+.extraInfo-open{
+  height: auto;
+  visibility: visible;
+  opacity:100;
+  margin: 5% 0;
+}
+.expandButton {
+  
+  font-size: 15px;
+  color:white;
+  cursor: pointer;
+  display:block;
+}
+.buttons{
+  width:100%;
+  height:5%;
+  display:flex;
+  justify-content: center;
+  padding: 2%;
+  background:linear-gradient(141deg, #9fb8ad 0%, #1fc8db 51%, #2cb5e8 75%);
+}
+.hide {
+  display:none;
+}
