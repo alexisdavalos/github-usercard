@@ -129,6 +129,10 @@ body {
   height:0px;
   visibility: hidden;
   opacity:0;
+  border: solid 2px #2cb5e8;
+  font-weight:bold;
+  margin: 5% 0;
+  background: linear-gradient(141deg, #9fb8ad8c 0%, #1fc8db82 51%, #2cb5e84a 75%);
 }
 .extraInfo-open{
   height: auto;
@@ -136,9 +140,7 @@ body {
   opacity:100;
   margin: 5% 0;
   padding: 5%;
-  border: solid 2px #2cb5e8;
-  font-weight:bold;
-  background: linear-gradient(141deg, #9fb8ad8c 0%, #1fc8db82 51%, #2cb5e84a 75%);
+  
 }
 .expandButton { 
   font-size: 15px;

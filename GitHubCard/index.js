@@ -4,9 +4,28 @@
 */
 axios.get('https://api.github.com/users/alexisdavalos')
 .then(response=>{
-  console.log(response);
-  const newCard = gitCard(response);
+  const newCard = gitCard(response.data);
   cardsParent.appendChild(newCard);
+})
+.then(function(){
+  return axios.get('https://api.github.com/users/alexisdavalos/followers')
+  .then(response =>{
+    //loop through response
+    response.data.forEach((item) =>{
+  
+      axios.get(`https://api.github.com/users/${item.login}`)
+        .then(response=>{
+          const newCard = gitCard(response.data);
+          cardsParent.appendChild(newCard);
+          console.log(response.data.login);
+      })//end 
+      .catch(error =>{
+        console.log("The data was not returned", error)
+      })
+
+    })//end loop
+   
+  })
 })
 /* Step 2: Inspect and study the data coming back, this is YOUR 
    github info! You will need to understand the structure of this 
@@ -30,19 +49,19 @@ const cardsParent = document.querySelector('.cards');
           user, and adding that card to the DOM.
 */
 
-const followersArray = ['FreedomWriter', 'thericktastic', 'agohorel', 'anamonteiro430', 'lucasgreenwell', 'nicbongo', 'PHONGdotTech', 'davebettswebdev', 'alexandercsierra', 'aalvinlin', 'lisabpink', 'Cireimu'];
+// const followersArray = ['FreedomWriter', 'thericktastic', 'agohorel', 'anamonteiro430', 'lucasgreenwell', 'nicbongo', 'PHONGdotTech', 'davebettswebdev', 'alexandercsierra', 'aalvinlin', 'lisabpink', 'Cireimu'];
 
-followersArray.forEach(item =>{
-  axios.get(`https://api.github.com/users/${item}`)
-    .then(response=>{
+// followersArray.forEach(item =>{
+//   axios.get(`https://api.github.com/users/${item}`)
+//     .then(response=>{
 
-      const newCard = gitCard(response);
-      cardsParent.appendChild(newCard);
-  })
-    .catch(error =>{
-      console.log("The Github Data Was Not Returned", error)
-    })
-})
+//       const newCard = gitCard(response);
+//       cardsParent.appendChild(newCard);
+//   })
+//     .catch(error =>{
+//       console.log("The Github Data Was Not Returned", error)
+//     })
+// })
 
 /* Step 3: Create a function that accepts a single object as its only argument,
           Using DOM methods and properties, create a component that will return the following DOM element: 
@@ -63,7 +82,7 @@ followersArray.forEach(item =>{
 </div>
 */
 
-function gitCard(data){
+function gitCard(obj){
   //create component elements
   const card = document.createElement('div'),
         usrImg = document.createElement('img'),
@@ -84,26 +103,26 @@ function gitCard(data){
 
 
   //add content to elements
-  usrImg.src = data.data.avatar_url;
-  name.textContent = data.data.name;
-  userName.textContent = data.data.login;
-  location.textContent = data.data.location;
+  usrImg.src = obj.avatar_url;
+  name.textContent = obj.name;
+  userName.textContent = obj.login;
+  location.textContent = obj.location;
   profileLink.textContent = "Visit Profile";
-  profileLink.href = data.data.html_url;
+  profileLink.href = obj.html_url;
   profileLink.target = "_blank";
-  followers.textContent = `Followers: ${data.data.followers}`;
-  following.textContent = `Following: ${data.data.following}`;
+  followers.textContent = `Followers: ${obj.followers}`;
+  following.textContent = `Following: ${obj.following}`;
 
   //Check null bio
-  if(data.data.bio === null){
+  if(obj.bio === null){
     bio.textContent = 'This User Has No Bio :(';
     bio.classList.toggle('noBio');
   }else{
-    bio.textContent = `Bio: ${data.data.bio}`;
+    bio.textContent = `Bio: ${obj.bio}`;
     bio.classList.toggle('bio');
   }
 
-  repos.textContent = `Public Repos: ${data.data.public_repos}`;
+  repos.textContent = `Public Repos: ${obj.public_repos}`;
   openButton.textContent = `See More \u25bc`;
   closeButton.textContent = `See Less \u25b2`;
 
@@ -139,6 +158,7 @@ function gitCard(data){
     openButton.classList.toggle('hide');
     closeButton.classList.toggle('hide');
     cardExtraInfo.classList.toggle('extraInfo-open');
+    cardExtraInfo.style.transition = "0.3s";
   })
 
   return card;
